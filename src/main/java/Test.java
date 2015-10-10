@@ -8,12 +8,15 @@ import java.util.ResourceBundle;
  * Created by pubmatic on 10/10/15.
  */
 public class Test {
-
-    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("fileinformation");
+    private static String folderPath ;
+    static {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("fileinformation");
+        folderPath= resourceBundle.getString("filepath");
+    }
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
         Invoice invoice = (Invoice)context.getBean("invoice");
-        invoice.generateInvoice(resourceBundle.getString("filepath"));
+        invoice.generateInvoice(folderPath+"printjobs.csv");
     }
 }

@@ -61,6 +61,7 @@ public class JobReaderImpl implements JobReader {
         int totalPages = Integer.parseInt(data[0].trim());
         int colourPages= Integer.parseInt(data[1].trim());
         boolean isDoubleSided= Boolean.parseBoolean(data[2].trim());
+
         return new PrintingJob(totalPages,colourPages,isDoubleSided);
     }
 
