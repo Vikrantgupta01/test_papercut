@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 @Component("jobReader")
 public class JobReaderImpl implements JobReader {
 
-    static Logger log = Logger.getLogger(JobReaderImpl.class.getName());
+    private  static Logger log = Logger.getLogger(JobReaderImpl.class.getName());
 
     static private  String DEFAULT_PAPER_TYPE = "A4";
 
@@ -22,41 +22,58 @@ public class JobReaderImpl implements JobReader {
     Validator validator;
 
 
-    public List<PrintingJob> getJobDetails(String filePath) {
-
-        //read file and get data[]
-        //do basic validation of file data
-        //parse information into object
-
+    public List<PrintingJob> getJobDetails(String filePath)  {
+        List<String[]> rows = null;
         try {
-            return getFileDate(filePath);
+            rows = getFileDate(filePath);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            log.error("Error while fetching job details from file");
+            throw new CustomException(e.getMessage());
+        }
+
+        validateJobsData(rows);
+        return getPrintingJobDetails(rows);
+
+    }
+
+    private void validateJobsData(List<String[]> jobData) {
+        List<String> errorMessages = new ArrayList<String>();
+        for (String[] data:jobData ){
+            validator.validate(data,errorMessages);
+        }
+
+        if(errorMessages.size()>0){
+            throw  new CustomException(errorMessages.toString());
         }
     }
 
-    private List<PrintingJob> getFileDate(String csvFile ) throws IOException{
+    private List<PrintingJob> getPrintingJobDetails(List<String[]> jobData) {
+        List<PrintingJob> printingJobs = new ArrayList<PrintingJob>();
+        for (String[] data:jobData ){
+            printingJobs.add(populateJobDetails(data));
+        }
+
+       return printingJobs;
+    }
+
+
+
+
+    private List<String[]> getFileDate(String csvFile ) throws IOException{
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
-        List<PrintingJob> printingJobs = new ArrayList<PrintingJob>();
-        List<String> errorMessages = new ArrayList<String>();
+        List<String[]> printingJobs = new ArrayList<String[]>();
+
         try {
             FileReader fileReader = new FileReader(csvFile);
             br = new BufferedReader(fileReader);
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
-                validator.validate(data,errorMessages);
-                printingJobs.add(populateJobDetails(data));
-
+                printingJobs.add(data);
             }
-
             if (printingJobs.size()==0){
                 throw  new CustomException("No data found to process");
-            }
-            if(errorMessages.size()>0){
-                throw  new CustomException(errorMessages.toString());
             }
 
         } catch (FileNotFoundException e) {

@@ -1,6 +1,8 @@
 package com.paper;
 
+import com.paper.model.InvoicedPrintingJob;
 import com.paper.model.PrintingJob;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,8 @@ import java.util.List;
 
 @Component("invoice")
 public class Invoice {
+
+    private static Logger log = Logger.getLogger(Invoice.class.getName());
 
     @Autowired
     private JobReader jobReader;
@@ -37,9 +41,12 @@ public class Invoice {
 
     public void generateInvoice(String filePath)
     {
+        log.info("Printing Job Start");
         List<PrintingJob> printingJobs = jobReader.getJobDetails(filePath);
-        jobProcessor.doProcess(printingJobs);
-        jobWriter.doWrite(printingJobs);
+        log.info("Total printing job are " + printingJobs.size());
+        List<InvoicedPrintingJob> invoicedPrintingJobs= jobProcessor.doProcess(printingJobs);
+        jobWriter.doWrite(invoicedPrintingJobs);
+        log.info("Printing Job complete");
     }
 
 }

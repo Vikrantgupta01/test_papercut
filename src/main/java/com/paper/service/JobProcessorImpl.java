@@ -1,13 +1,12 @@
 package com.paper.service;
 
 import com.paper.JobProcessor;
-import com.paper.model.PaperType;
-import com.paper.model.PrintinType;
-import com.paper.model.PrintingColor;
-import com.paper.model.PrintingJob;
+import com.paper.model.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -18,33 +17,43 @@ public class JobProcessorImpl implements JobProcessor{
     private String SEPRATOR = "_";
 
     @Override
-    public void doProcess(List<PrintingJob> printingJobs) {
-
+    public List<InvoicedPrintingJob> doProcess(List<PrintingJob> printingJobs) {
+        List<InvoicedPrintingJob> invoicedPrintingJobs = new ArrayList<InvoicedPrintingJob>();
         for (PrintingJob printingJob: printingJobs){
-            calculateJobCost(printingJob);
+           InvoicedPrintingJob invoicedPrintingJob =  calculateJobCost(printingJob);
+            invoicedPrintingJobs.add(invoicedPrintingJob);
         }
+        return invoicedPrintingJobs;
     }
 
 
-    private void calculateJobCost(PrintingJob printingJob) {
+    private InvoicedPrintingJob calculateJobCost(PrintingJob printingJob) {
 
+        InvoicedPrintingJob invoicedPrintingJob = new InvoicedPrintingJob(printingJob);
         String defaultKey =  generateCostingKey(printingJob);
         BigDecimal finalCost =BigDecimal.ZERO;
         finalCost.setScale(2,BigDecimal.ROUND_DOWN);
 
         if(printingJob.getColourPages()>0){
             String finalKeyForCLR = defaultKey+PrintingColor.CLR;
-            double costForCLR = Double.parseDouble(resourceBundle.getString(finalKeyForCLR)) * printingJob.getMonochromePages();
-            System.out.println("costForCLR "+costForCLR);
-            finalCost = finalCost.add(new BigDecimal(costForCLR));
+            BigDecimal perUnitColorCost = new BigDecimal(resourceBundle.getString(finalKeyForCLR));
+            BigDecimal colorPages =  new BigDecimal(printingJob.getColourPages());
+            BigDecimal costForCLR = perUnitColorCost.multiply(colorPages);
+            finalCost = finalCost.add(costForCLR);
+            invoicedPrintingJob.setPerUnitColorPrint(perUnitColorCost);
+            invoicedPrintingJob.setColorPrintCost(costForCLR);
         }
         if(printingJob.getMonochromePages()>0){
             String finalKeyForBW = defaultKey+PrintingColor.BW;
-            double costForBW = Double.parseDouble(resourceBundle.getString(finalKeyForBW)) * printingJob.getMonochromePages();
-            System.out.println("costForBW "+costForBW);
-            finalCost = finalCost.add(new BigDecimal(costForBW));
+            BigDecimal perUnitMonoCost = new BigDecimal(resourceBundle.getString(finalKeyForBW));
+            BigDecimal monoPages =  new BigDecimal(printingJob.getMonochromePages());
+            BigDecimal costForMono = perUnitMonoCost.multiply(monoPages);
+            finalCost = finalCost.add(costForMono);
+            invoicedPrintingJob.setPerUnitMonoPrint(perUnitMonoCost);
+            invoicedPrintingJob.setMonoPrintCost(costForMono);
         }
-        printingJob.setCost(finalCost);
+        invoicedPrintingJob.setTotalCost(finalCost);
+        return  invoicedPrintingJob;
     }
 
     private String generateCostingKey(PrintingJob printingJob){

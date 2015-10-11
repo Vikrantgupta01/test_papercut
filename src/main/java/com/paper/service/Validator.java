@@ -9,20 +9,26 @@ import java.util.List;
 @Component
 public class Validator {
 
-    static Logger log = Logger.getLogger(Validator.class.getName());
+    private static Logger log = Logger.getLogger(Validator.class.getName());
 
     static String TOTAL_PAGES = "Total Pages";
     static String COLOR_PAGES = "Color Pages";
     static String SIDE = "Printing Side Flag";
 
     void validate(String[] data,List<String> errorMessages){
+        if(data.length!=3){
+            log.error("Invalid job details "+data);
+            errorMessages.add("Invalid job details "+data);
+            return;
+        }
+
         int totalPages = getValidatedIntFromString(data[0],TOTAL_PAGES,errorMessages);
         int colourPages=  getValidatedIntFromString(data[1],COLOR_PAGES,errorMessages);
         boolean isDoubleSided= getValidatedBooleanFromString(data[2],SIDE,errorMessages);
 
-        if(totalPages<0){
-            log.error("Total pages count can't be -ve ="+totalPages);
-            errorMessages.add("Total pages count can't be -ve =" + totalPages);
+        if(totalPages<=0){
+            log.error("Total pages count should be  +ve="+totalPages);
+            errorMessages.add("Invalid total pages count=" + totalPages);
         }
 
         if(colourPages<0){
