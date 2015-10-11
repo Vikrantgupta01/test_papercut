@@ -41,13 +41,22 @@ public class JobReaderImpl implements JobReader {
         String line = "";
         String cvsSplitBy = ",";
         List<PrintingJob> printingJobs = new ArrayList<PrintingJob>();
+        List<String> errorMessages = new ArrayList<String>();
         try {
             FileReader fileReader = new FileReader(csvFile);
             br = new BufferedReader(fileReader);
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
-                validator.validate(data);
+                validator.validate(data,errorMessages);
                 printingJobs.add(populateJobDetails(data));
+
+            }
+
+            if (printingJobs.size()==0){
+                throw  new CustomException("No data found to process");
+            }
+            if(errorMessages.size()>0){
+                throw  new CustomException(errorMessages.toString());
             }
 
         } catch (FileNotFoundException e) {
