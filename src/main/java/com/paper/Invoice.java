@@ -15,6 +15,9 @@ public class Invoice {
     @Autowired
     private JobProcessor jobProcessor;
 
+    @Autowired
+    private JobWriter jobWriter;
+
 
     public JobReader getJobReader() {
         return jobReader;
@@ -35,15 +38,8 @@ public class Invoice {
     public void generateInvoice(String filePath)
     {
         List<PrintingJob> printingJobs = jobReader.getJobDetails(filePath);
-        double totalInvoicedAmount = 0.0;
-
-        for (PrintingJob printingJob: printingJobs){
-            totalInvoicedAmount+=jobProcessor.calculateJobCost(printingJob);
-        }
-
-        System.out.println(totalInvoicedAmount);
-
-
+        jobProcessor.doProcess(printingJobs);
+        jobWriter.doWrite(printingJobs);
     }
 
 }

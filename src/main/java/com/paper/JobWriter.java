@@ -6,9 +6,9 @@ import com.paper.model.PrintingJob;
 import java.util.List;
 
 
-public interface JobProcessor {
+public interface JobWriter {
 
-    void doProcess(List<PrintingJob> printingJobs);
+    void doWrite(List<PrintingJob> printingJobs);
 
 
 }

@@ -7,6 +7,7 @@ public class PrintingJob {
     private int colourPages;
     private int monochromePages;
     private boolean isDoubleSided;
+    private double cost;
 
 
     public PrintingJob(int totalPages, int colourPages, boolean isDoubleSided) {
@@ -31,6 +32,22 @@ public class PrintingJob {
         return isDoubleSided;
     }
 
+    public double getCost() {
+        return cost;
+    }
 
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
 
+    @Override
+    public String toString() {
+        return "PrintingJob{" +
+                "totalPages=" + totalPages +
+                ", colourPages=" + colourPages +
+                ", monochromePages=" + getMonochromePages() +
+                ", isDoubleSided=" + isDoubleSided +
+                ", cost=" + cost +
+                '}';
+    }
 }

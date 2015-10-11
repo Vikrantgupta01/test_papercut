@@ -7,6 +7,7 @@ import com.paper.model.PrintingColor;
 import com.paper.model.PrintingJob;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Component("jobProcessor")
@@ -16,7 +17,15 @@ public class JobProcessorImpl implements JobProcessor{
     private String SEPRATOR = "_";
 
     @Override
-    public double calculateJobCost(PrintingJob printingJob) {
+    public void doProcess(List<PrintingJob> printingJobs) {
+
+        for (PrintingJob printingJob: printingJobs){
+            calculateJobCost(printingJob);
+        }
+    }
+
+
+    private void calculateJobCost(PrintingJob printingJob) {
 
         String defaultKey =  generateCostingKey(printingJob);
         double finalCost = 0.0;
@@ -30,7 +39,7 @@ public class JobProcessorImpl implements JobProcessor{
             double costForBW = Double.parseDouble(resourceBundle.getString(finalKeyForBW)) * printingJob.getMonochromePages();
             finalCost +=costForBW;
         }
-        return finalCost;
+        printingJob.setCost(finalCost);
     }
 
     private String generateCostingKey(PrintingJob printingJob){
@@ -46,4 +55,6 @@ public class JobProcessorImpl implements JobProcessor{
         return key.toString();
 
     }
+
+
 }
