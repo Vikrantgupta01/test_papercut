@@ -7,6 +7,7 @@ import com.paper.model.PrintingColor;
 import com.paper.model.PrintingJob;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -28,16 +29,20 @@ public class JobProcessorImpl implements JobProcessor{
     private void calculateJobCost(PrintingJob printingJob) {
 
         String defaultKey =  generateCostingKey(printingJob);
-        double finalCost = 0.0;
+        BigDecimal finalCost =BigDecimal.ZERO;
+        finalCost.setScale(2,BigDecimal.ROUND_DOWN);
+
         if(printingJob.getColourPages()>0){
             String finalKeyForCLR = defaultKey+PrintingColor.CLR;
             double costForCLR = Double.parseDouble(resourceBundle.getString(finalKeyForCLR)) * printingJob.getMonochromePages();
-            finalCost += costForCLR;
+            System.out.println("costForCLR "+costForCLR);
+            finalCost = finalCost.add(new BigDecimal(costForCLR));
         }
         if(printingJob.getMonochromePages()>0){
             String finalKeyForBW = defaultKey+PrintingColor.BW;
             double costForBW = Double.parseDouble(resourceBundle.getString(finalKeyForBW)) * printingJob.getMonochromePages();
-            finalCost +=costForBW;
+            System.out.println("costForBW "+costForBW);
+            finalCost = finalCost.add(new BigDecimal(costForBW));
         }
         printingJob.setCost(finalCost);
     }

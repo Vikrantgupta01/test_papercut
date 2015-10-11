@@ -1,16 +1,22 @@
 package com.paper.model;
 
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
+
 public class PrintingJob {
 
+    private String pageType;
     private int totalPages;
     private int colourPages;
     private int monochromePages;
     private boolean isDoubleSided;
-    private double cost;
+    private BigDecimal cost;
 
 
-    public PrintingJob(int totalPages, int colourPages, boolean isDoubleSided) {
+    public PrintingJob(String pageType, int totalPages, int colourPages, boolean isDoubleSided) {
+        this.pageType = pageType;
         this.totalPages = totalPages;
         this.colourPages = colourPages;
         this.isDoubleSided = isDoubleSided;
@@ -32,22 +38,33 @@ public class PrintingJob {
         return isDoubleSided;
     }
 
-    public double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
+    public String getPageType() {
+        return pageType;
+    }
+
+    static  DecimalFormat df = new DecimalFormat();
+    static {
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(0);
+        df.setGroupingUsed(false);
+    }
     @Override
     public String toString() {
         return "PrintingJob{" +
-                "totalPages=" + totalPages +
+                "pageType='" + pageType + '\'' +
+                ", totalPages=" + totalPages +
                 ", colourPages=" + colourPages +
                 ", monochromePages=" + getMonochromePages() +
                 ", isDoubleSided=" + isDoubleSided +
-                ", cost=" + cost +
-                '}';
+                ", cost=" + df.format(cost) +
+                " (AUD) }";
     }
 }

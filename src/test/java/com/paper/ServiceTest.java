@@ -35,13 +35,13 @@ public class ServiceTest {
 
     }
 
-    @Test
+    /*@Test
     public void test2() {
 
         String fileName = folderPath+"printjobs.csv";
         invoice.generateInvoice(fileName);
 
-    }
+    }*/
 
 
 }

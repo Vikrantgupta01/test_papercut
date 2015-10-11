@@ -10,7 +10,4 @@
 
     <context:component-scan base-package="com.paper"/>
 
-    <!--<bean id="invoice" class="com.paper.Invoice"/>
-    <bean id="jobReader" class="com.paper.service.JobReaderImpl"/>-->
-
 </beans>
