@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 /**
  * Created by pubmatic on 10/10/15.
  */
-public class Test {
+public class Client {
     private static String folderPath ;
     static {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("fileinformation");
