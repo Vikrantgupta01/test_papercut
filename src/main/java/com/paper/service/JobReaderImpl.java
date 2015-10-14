@@ -47,7 +47,7 @@ public class JobReaderImpl implements JobReader {
     /**
      * @param jobData
      * @throws CustomException
-     * validate input data 
+     * validate input data
      */
     private void validateJobsData(List<String[]> jobData) {
         List<String> errorMessages = new ArrayList<String>();
