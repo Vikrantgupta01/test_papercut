@@ -3,9 +3,7 @@ package com.paper.service;
 import com.paper.JobProcessor;
 import com.paper.model.*;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -16,6 +14,14 @@ public class JobProcessorImpl implements JobProcessor{
     private  static ResourceBundle resourceBundle = ResourceBundle.getBundle("printing_cost");
     private String SEPRATOR = "_";
 
+    /**
+     * @param printingJobs
+     * @return  InvoicedPrintingJob
+     *
+     * calculates the costing of job and wrap job information
+     * along with pricing information
+     *
+     */
     @Override
     public List<InvoicedPrintingJob> doProcess(List<PrintingJob> printingJobs) {
         List<InvoicedPrintingJob> invoicedPrintingJobs = new ArrayList<InvoicedPrintingJob>();

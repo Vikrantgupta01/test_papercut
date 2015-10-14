@@ -22,6 +22,14 @@ public class JobReaderImpl implements JobReader {
     Validator validator;
 
 
+    /**
+     * @param filePath
+     * @return List<PrintingJob>
+     * @throws CustomException
+     *
+     * get the job data row file and do the data validation before setting data for processing
+     *
+     * */
     public List<PrintingJob> getJobDetails(String filePath)  {
         List<String[]> rows = null;
         try {
@@ -36,6 +44,11 @@ public class JobReaderImpl implements JobReader {
 
     }
 
+    /**
+     * @param jobData
+     * @throws CustomException
+     * validate input data 
+     */
     private void validateJobsData(List<String[]> jobData) {
         List<String> errorMessages = new ArrayList<String>();
         for (String[] data:jobData ){

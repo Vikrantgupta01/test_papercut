@@ -40,7 +40,10 @@ public class Invoice {
     }
 
 
-
+    /**
+     * @param filePath
+     * Generate Invoice and print on console
+     */
     public void generateInvoice(String filePath)
     {
         log.info("Printing Job Start");

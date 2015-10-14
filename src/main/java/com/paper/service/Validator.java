@@ -15,6 +15,14 @@ public class Validator {
     static String COLOR_PAGES = "Color Pages";
     static String SIDE = "Printing Side Flag";
 
+
+    /**
+     * @param data
+     * @param errorMessages
+     *
+     * validate input data and some business validation as well
+     *
+     */
     void validate(String[] data,List<String> errorMessages){
         if(data.length!=3){
             log.error("Invalid job details "+data);

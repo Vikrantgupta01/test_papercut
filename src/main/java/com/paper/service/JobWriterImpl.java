@@ -6,13 +6,20 @@ import com.paper.model.PrintingJob;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component("jobWriter")
 public class JobWriterImpl implements JobWriter {
 
     private static String currency = "AUD";
+
+    /**
+     * @param List<InvoicedPrintingJob>
+     *
+     * Print job information along with pricing on console.
+     *
+     */
+
     @Override
     public void doWrite(List<InvoicedPrintingJob> printingJobs) {
         BigDecimal totalInvoicedAmount = new BigDecimal(0.0);
