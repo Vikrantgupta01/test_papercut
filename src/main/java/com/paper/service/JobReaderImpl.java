@@ -35,11 +35,13 @@ public class JobReaderImpl implements JobReader {
      * */
     public List<PrintingJob> getJobDetails(String filePath)  {
         List<String[]> rows = null;
+        List<String> errors = new ArrayList<String>();
         try {
             rows = getFileDate(filePath);
         } catch (IOException e) {
             log.error("Error while fetching job details from file");
-            throw new CustomException(e.getMessage());
+            errors.add("Error while fetching job details from file");
+            throw new CustomException(errors);
         }
 
         validateJobsData(rows);
@@ -59,7 +61,7 @@ public class JobReaderImpl implements JobReader {
         }
 
         if(errorMessages.size()>0){
-            throw  new CustomException(errorMessages.toString());
+            throw  new CustomException(errorMessages);
         }
     }
 
