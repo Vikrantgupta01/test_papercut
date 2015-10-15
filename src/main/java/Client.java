@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 public class Client {
     private static String folderPath ;
     static {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("fileinformation");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("printpaper");
         folderPath= resourceBundle.getString("filepath");
     }
 

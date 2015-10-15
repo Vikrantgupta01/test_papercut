@@ -1,6 +1,6 @@
 1) List of changes to run the application.
     a) create a folder for test input files and copy all files from $ProjectPath/doc/testdata
-    b) update "filepath" property in fileinformation.properties file according to your folder location.
+    b) update "filepath" property in printpaper.properties file according to your folder location.
     c) update "log4j.appender.logfile.File" in log4j.properties file according to desired log file location in  your system
 
 

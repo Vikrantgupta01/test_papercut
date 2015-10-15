@@ -5,11 +5,18 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Component
 public class Validator {
 
     private static Logger log = Logger.getLogger(Validator.class.getName());
+
+    private static int maxPrintAllowed ;
+    static {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("printpaper");
+        maxPrintAllowed = Integer.parseInt(resourceBundle.getString("max_print_allowed"));
+    }
 
     static String TOTAL_PAGES = "Total Pages";
     static String COLOR_PAGES = "Color Pages";
@@ -37,6 +44,11 @@ public class Validator {
         if(totalPages<=0){
             log.error("Total pages count should be  +ve="+totalPages);
             errorMessages.add("Invalid total pages count=" + totalPages);
+        }
+
+        if(totalPages>maxPrintAllowed){
+            log.error("Total pages count should be  less than  "+maxPrintAllowed+" "+totalPages);
+            errorMessages.add("Not allowed to print more than "+maxPrintAllowed+" page in a single job");
         }
 
         if(colourPages<0){

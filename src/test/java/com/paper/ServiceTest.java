@@ -20,11 +20,12 @@ import java.util.ResourceBundle;
 public class ServiceTest {
 
     private static String folderPath ;
+    private static int maxPrintAllowed ;
     static {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("fileinformation");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("printpaper");
         folderPath= resourceBundle.getString("filepath");
+        maxPrintAllowed = Integer.parseInt(resourceBundle.getString("max_print_allowed"));
     }
-
 
 
     @Autowired
@@ -66,6 +67,12 @@ public class ServiceTest {
         invoice.getJobReader().getJobDetails(fileName);
     }
 
+    @Test(expected=CustomException.class)
+    public void testMaxPrint() {
+        String fileName = folderPath+"printjobsGreaterThan1000.csv";
+        invoice.getJobReader().getJobDetails(fileName);
+    }
+
     @Test
     public void testSingleJobTenTenDoubleFile() {
         String fileName = folderPath+"printjobs_10_10_double.csv";
@@ -100,6 +107,8 @@ public class ServiceTest {
         }
         Assert.assertEquals(new BigDecimal(117.9).doubleValue(),totalInvoicedAmount.doubleValue());
     }
+
+
 
 
     @Test
