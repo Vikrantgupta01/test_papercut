@@ -1,6 +1,5 @@
 package com.paper.service;
 
-import com.paper.exception.CustomException;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -64,24 +63,23 @@ public class Validator {
 
 
     private int getValidatedIntFromString(String data,String type,List<String> errorMessages){
-        int i = 0;
+        int iValue = 0;
         if(data==null || data.trim().length()==0){
             log.error("Invalid input "+data);
             errorMessages.add("Invalid input " +type+"="+ data);
         }
 
         try {
-            i = Integer.parseInt(data.trim());
+            iValue = Integer.parseInt(data.trim());
         }catch (NumberFormatException e){
             log.error("Invalid number "+data);
             errorMessages.add("Invalid number " +type+"="+ data);
         }
-        return i;
-
+        return iValue;
     }
 
     private boolean getValidatedBooleanFromString(String data,String type,List<String> errorMessages){
-        boolean b = false;
+
         if(data==null || data.trim().length()==0 ){
             log.error("Invalid input "+data);
             errorMessages.add("Invalid input " + data);

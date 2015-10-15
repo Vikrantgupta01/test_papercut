@@ -1,8 +1,5 @@
 package com.paper.model;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-
 public class PrintingJob {
 
     private     String      pageType;

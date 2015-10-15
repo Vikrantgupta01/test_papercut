@@ -4,7 +4,6 @@ import com.paper.exception.CustomException;
 import com.paper.model.InvoicedPrintingJob;
 import com.paper.model.PrintingJob;
 import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
