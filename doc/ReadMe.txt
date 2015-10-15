@@ -24,4 +24,13 @@
 
 
 
+     Note:
+     There are following assumption while putting validation on job command.
+     1) Limit of maximum page student can print is 1000. ( configure in  printpaper.properties)
+
+
+
+
+
+
 
